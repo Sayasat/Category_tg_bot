@@ -9,12 +9,19 @@ import java.util.Optional;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
-    Optional<Category> findByName(String name);
+
+    // Найти все категории, у которых нет родительской категории (корневые категории) для данного chatId
     List<Category> findByParentIsNullAndChatId(Long chatId);
-    Optional<Category> findByNameAndParentName(String name, String parentName);
-    Optional<Category> findByNameAndParent(String name, Category parent);
+
+    // Найти все категории, у которых указанный родитель и указанный chatId
     List<Category> findByParentAndChatId(Category category, Long chatId);
+
+    // Найти все категории для указанного chatId
     List<Category> findByChatId(Long chatId);
+
+    // Найти категорию по имени и chatId
     Optional<Category> findByNameAndChatId(String name, Long chatId);
+
+    // Найти категорию по имени, родительской категории и chatId
     Optional<Category> findByNameAndParentAndChatId(String name, Category parent, Long chatId);
 }

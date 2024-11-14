@@ -1,19 +1,12 @@
 package com.programmingtechie.pandevtt.command;
 
+import com.programmingtechie.pandevtt.exception.CustomFileDownloadException;
 import com.programmingtechie.pandevtt.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.math3.stat.descriptive.summary.Product;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.GetFile;
-import org.telegram.telegrambots.meta.api.objects.Document;
-import org.telegram.telegrambots.meta.api.objects.File;
-import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.bots.AbsSender;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -22,13 +15,23 @@ public class UploadCommand {
 
     private final CategoryService categoryService;
 
+    /**
+     * Обрабатывает загрузку файла с категориями и сохраняет данные в базу данных.
+     *
+     * @param inputStream входной поток данных файла, который был загружен пользователем
+     * @param chatId идентификатор чата пользователя
+     * @return сообщение об успешной обработке файла
+     */
     public String handleFileUpload(InputStream inputStream, Long chatId) {
         try {
+            // Загружаем категории из Excel файла и сохраняем их в базу данных
             categoryService.uploadCategoriesFromExcel(inputStream, chatId);
-            return "File successfully processed. Categories have been uploaded to the database.";
+            return "Файл успешно обработан. Категории были загружены в базу данных.";
         } catch (Exception e) {
-            log.error("General error occurred while downloading file: {}", e.getMessage());
-            throw new CustomFileDownloadException("An unexpected error occurred", e);
+            // Логируем ошибку, если она произошла
+            log.error("Произошла общая ошибка при загрузке файла: {}", e.getMessage());
+            // Бросаем кастомное исключение с сообщением об ошибке
+            throw new CustomFileDownloadException("Произошла непредвиденная ошибка", e);
         }
     }
 }
