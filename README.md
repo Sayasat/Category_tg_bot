@@ -35,14 +35,22 @@
 Создайте файл `.env` в корне проекта и укажите в нем настройки:
 
 ```dotenv
-SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/categorydb
+SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/telegram_bot_db
 SPRING_DATASOURCE_USERNAME=your_username
 SPRING_DATASOURCE_PASSWORD=your_password
 TG_BOT_NAME=your_bot_name
 TG_BOT_TOKEN=your_bot_token
 ```
 
-``Замените your_username, your_password, your_bot_name, и your_bot_token на реальные значения``
+В docker-compose.yml:
+
+```dotenv
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+DB_NAME=your_db_name
+```
+
+``Замените your_username, your_password, your_bot_name, и your_bot_token, your_db_name на реальные значения``
 
 Далее запустите проект с помощью следующей команды:
 
